@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Telegramm WebApp</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        data = [[]]
+        comm = ""
+        let tg = window.Telegram.WebApp;
+        function getproducts() {
+            let kek = document.querySelectorAll(':disabled')
+            console.log(kek)
+            if(typeof kek[0] != "undefined") {
+                data = data +[,]+[kek[0].value + "-" + kek[0].innerHTML] + "_"
+            }
+            if(typeof kek[1] != "undefined") {
+                data = data+[,] +[kek[1].value + "-" + kek[1].innerHTML,]+ "_"
+            }
+            if(typeof kek[2] != "undefined") {
+                data = data +[,]+ [kek[2].value + "-" + kek[2].innerHTML,]+ "_"
+            }
+            if(typeof kek[3] != "undefined") {
+                data = data+[,]+[kek[3].value + "-" + kek[3].innerHTML,]+ "_"
+            }
+            if(typeof kek[4] != "undefined") {
+                data = data+[,]+[kek[4].value + "-" + kek[4].innerHTML,]+ "_"
+            }
+            if(typeof kek[5] != "undefined") {
+                data = data+[,]+[kek[5].value + "-" + kek[5].innerHTML,]+ "_"
+            }
+            if(typeof kek[6] != "undefined") {
+                data = data+[,]+[kek[6].value + "-" + kek[6].innerHTML,]+ "_"
+            }
+            if(typeof kek[7] != "undefined") {
+                data = data+[,]+[kek[7].value + "-" + kek[7].innerHTML,]+ "_"
+            }
+            if(typeof kek[8] != "undefined") {
+                data = data+[,]+[kek[8].value + "-" + kek[8].innerHTML,]+ "_"
+            }
+            tg.sendData(data);
+        }
+        function setproductcost(card_id, operation) {
+            card_id = card_id.toString();
+            
+            let card = document.getElementById(card_id);
+            
+            old_value = card.innerHTML;
+            new_value = Number(old_value) + operation;
+            console.log(new_value);
+            card.innerHTML = new_value
+            product_name = card_id.split("_")[0]
+            card.setAttribute("value", product_name)
+            if (new_value <= 0) {
+                new_card_id = card_id.split("_")[0]+"_minus"
+                console.log(new_card_id);
+                let card = document.getElementById(new_card_id)
+                card.setAttribute("disabled",true)
+
+            }
+            else {
+                new_card_id = card_id.split("_")[0]+"_minus"
+                console.log(new_card_id);
+                let card = document.getElementById(new_card_id)
+                card.removeAttribute("disabled")
+
+             
+            }
+        }
+        function minus(minus_id) {
+            setproductcost(minus_id, -1);
+        }
+        function plus(minus_id) {
+            setproductcost(minus_id, +1);
+        }
+        function buy(product, cost, btn_id, card_id) {
+            let btn = document.getElementById(btn_id);
+            let card = document.getElementById(card_id);
+            card.removeChild(btn);
+
+
+            let minus = document.createElement("button");
+            minus.innerHTML = "-";
+            minus_id = card_id.split("_")[0].toString() + "_minus"
+            value_generated_id = card_id.split("_")[0].toString() + "_value";
+            minus.setAttribute("onclick", 'minus("'+value_generated_id+'")');
+            minus.setAttribute("id", minus_id)
+            minus.setAttribute("class", "interface")
+            card.appendChild(minus);
+
+
+            let value = document.createElement("button");
+            value.innerHTML = "1";
+            product_name = card_id.split("_")[0]
+            value.setAttribute("value", product_name)
+            value.id = value_generated_id;
+            value.setAttribute("disabled","True");
+            value.setAttribute("class", "interface")
+            card.appendChild(value);
+
+
+
+            let plus = document.createElement("button");
+            plus.innerHTML = "+";
+            plus_id = card_id.split("_")[0].toString() + "_plus"
+            value_generated_id = card_id.split("_")[0].toString() + "_value";
+            plus.setAttribute("onclick", 'plus("'+value_generated_id+'")');
+            plus.setAttribute("id", plus_id)
+            plus.setAttribute("class", "interface")
+            card.appendChild(plus);
+
+            tg.MainButton.text = "Перейти к оплате"
+            tg.MainButton.color = " #5ebd00"
+
+            
+            tg.MainButton.show();
+            
+        }
+        tg.MainButton.enable();
+        if (tg.MainButton.isVisible == true) {
+            tg.MainButton.hide();
+        }
+        Telegram.WebApp.onEvent('mainButtonClicked', function () {
+                getproducts()
+            })
+
+
+        function image_button(hiddenn_div_id) {
+            doc = document.getElementById(hiddenn_div_id).style.display = "block"
+            document.getElementsByClassName("displaying")[0].style.display = "block"
+        }
+
+        function close_card(card_id) {
+            doc = document.getElementById(card_id).style.display = "none"
+            document.getElementsByClassName("displaying")[0].style.display = "none"
+        }
+
+
+    </script>
+        <div id="products">
+            <div class="displaying" style="display: none;">
+                <div class="prod_card" style="display: none;" id="pelmeni">
+                    <img class="high_img" src="img/high_quality/Пельмени.png">
+                    <p class="txt" style="color: black">Сочные пельмени!</p>
+                    <p class="txt"style="color: black">Состав: мясо, тесто, специи (перец, соль)</p>
+                    <button class="cross"onclick="close_card('pelmeni')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="plov">
+                    <img class="high_img" src="img/high_quality/Плов.png">
+                    <p class="txt"style="color: black">Отличный плов!</p>
+                    <p class="txt"style="color: black">Состав: мясо, рис, морковь, специи (перец, соль)</p>
+                    <button class="cross"onclick="close_card('plov')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="shashlik">
+                    <img class="high_img" src="img/high_quality/Шашлыки.png">
+                    <p style="color: black">Сочный шашлык!</p>
+                    <p style="color: black">Состав: 100% мясо, специи (перец, соль)</p>
+                    <button class="cross"onclick="close_card('shashlik')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="манты">
+                    <img class="high_img" src="img/high_quality/Манты.png">
+                    <p class="txt" style="color: black">Сочные Манты!</p>
+                    <p class="txt" style="color: black">Состав: 100% мясо, тесто</p>
+                    <button class="cross"onclick="close_card('манты')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="dolma">
+                    <img class="high_img" src="img/high_quality/Долма.png">
+                    <p class="txt"style="color: black">Долма</p>
+                    <p class="txt"style="color: black">Состав: неизвестен</p>
+                    <button class="cross"onclick="close_card('dolma')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="kazan kabob">
+                    <img class="high_img" src="img/high_quality/Казан кабоб.png">
+                    <p class="txt"style="color: black">Казан кабоб</p>
+                    <p class="txt"style="color: black">Состав: неизвестен</p>
+                    <button class="cross"onclick="close_card('kazan kabob')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="kuza shurpa">
+                    <img class="high_img" src="img/high_quality/Куза шурпа.png">
+                    <p class="txt"style="color: black">Куза шурпа</p>
+                    <p class="txt"style="color: black">Состав: неизвестен</p>
+                    <button class="cross"onclick="close_card('kuza shurpa')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="lagman">
+                    <img class="high_img" src="img/high_quality/Лагман.png">
+                    <p class="txt"style="color: black">Сочный Лагман!</p>
+                    <p class="txt"style="color: black">Состав: лапша, овощи, мясо, специи (перец, соль)</p>
+                    <button class="cross"onclick="close_card('lagman')">Закрыть</button>
+                </div>
+                <div class="prod_card" style="display: none;" id="gizh shashlik">
+                    <img class="high_img" src="img/high_quality/Гиждуванский шашлык.png">
+                    <p class="txt"style="color: black">Замечательный шашлык!</p>
+                    <p class="txt"style="color: black">Состав: 100% мясо</p>
+                    <button class="cross" onclick="close_card('gizh shashlik')">Закрыть</button>
+                </div>
+            </div>
+            <div class="inner">
+                <div class="card" id="pelmeni_card">
+                    <button onclick="image_button('pelmeni')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Пельмени.png">
+                    </button>
+                    <p></p>
+                    <p2>Пельмени</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="pelmeni_button" onclick="buy('пельмени','190 руб', id, 'pelmeni_card')">купить</button>
+                </div>
+                <div class="card" id="plov_card">
+                    <button onclick="image_button('plov')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Плов.png">
+                    </button>
+                    <p></p>
+                    <p2>Плов</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="plov_button" onclick="buy('плов','490 руб', id, 'plov_card')">купить</button>
+                </div>
+
+                <div class="card" id="classic shaslik_card">
+                    <button onclick="image_button('shashlik')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Шашлыки.png">
+                    </button>
+                    <p></p>
+                    <p2>Шашлык</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="classic shaslik_button" onclick="buy('шашлык','1090 руб', id, 'classic shaslik_card')">купить</button>
+                    
+                </div>
+                <div class="card" id="манты_card">
+                    <button onclick="image_button('манты')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Манты.png">
+                    </button>
+                    <p></p>
+                    <p2>манты</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="манты_button" onclick="buy('манты','40 руб', id, 'манты_card')">купить</button>
+                </div>
+                <div class="card" id="dolma_card">
+                    <button onclick="image_button('dolma')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Долма.png">
+                    </button>
+                    <p></p>
+                    <p2>Долма</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="dolma_button" onclick="buy('долма','90 руб', id, 'dolma_card')">купить</button>
+                </div>
+                <div class="card" id="kazan kabob_card">
+                    <button onclick="image_button('kazan kabob')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Казан кабоб.png">
+                    </button>
+                    <p></p>
+                    <p2>Казан кабоб</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="kazan kabob_button" onclick="buy('Казан кабоб','90 руб', id, 'kazan kabob_card')">купить</button>
+                </div>
+                <div class="card" id="kuza shurpa_card">
+                    <button onclick="image_button('kuza shurpa')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Куза шурпа.png">
+                    </button>
+                    <p></p>
+                    <p2>Куза шурпа</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="kuza shurpa_button" onclick="buy('Куза шурпа','90 руб', id, 'kuza shurpa_card')">купить</button>
+                </div>
+                <div class="card" id="lagman_card">
+                    <button onclick="image_button('lagman')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Лагман.png">
+                    </button>
+                    <p></p>
+                    <p2>Лагман</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="lagman_button" onclick="buy('Лагман','90 руб', id, 'lagman_card')">купить</button>
+                </div>
+                <div class="card" id="gizhduvanskiy shaslik_card">
+                    <button onclick="image_button('gizh shashlik')" class="img_btn" style="color: var(--tg-theme-text-color); background: var(--tg-theme-bg-color); border: 0px">
+                        <img class="img" src="img/Гиждуванский шашлык.png">
+                    </button>
+                    <p></p>
+                    <p2>Гиждуванский шашлык</p2>
+                    <p></p>
+                    <p2>200 руб</p2>
+                    <p></p>
+                    <button class="btn" id="gizhduvanskiy shaslik_button" onclick="buy('Гиждуванский шашлык','90 руб', id, 'gizhduvanskiy shaslik_card')">купить</button>
+                </div>
+            </div>
+
+            
+        </div>
+    
+
+</body>
+</html>
